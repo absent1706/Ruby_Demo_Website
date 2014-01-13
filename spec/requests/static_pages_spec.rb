@@ -11,7 +11,7 @@ describe "Static pages" do
 		end
 		it "should not have a custom page title" do
 			visit root_path
-			page.should_not have_selector('title',text: '| Home')
+			page.should_not have_selector('title',text: 'Home')
 		end
 	end
 	describe "Help page" do
