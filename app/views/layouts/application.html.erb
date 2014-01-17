@@ -11,6 +11,7 @@
 <body>
 	<%= render 'layouts/header' %>
 	<div class="container">
+		<%= session[:return_to] %>
 		<% flash.each do |key, value| %>
 			<div class="alert alert-<%= key %>"><%= value %></div>
 		<% end %>
