@@ -13,7 +13,24 @@ describe "Static pages" do
 			visit root_path
 			page.should_not have_selector('title',text: 'Home')
 		end
+
+		describe "for signed-in users" do
+			let(:user) { FactoryGirl.create(:user) }
+			before do
+				FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+				FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+				sign_in user
+				visit root_path
+			end
+
+			it "should render the user's feed" do
+				user.feed.each do |item|
+					expect(page).to have_selector("li##{item.id}", text: item.content)
+				end
+			end
+		end
 	end
+
 	describe "Help page" do
 		it "should have the h1 'Help'" do
 			visit help_path
@@ -24,6 +41,7 @@ describe "Static pages" do
 			page.should have_selector('title',text: "Ruby on Rails Tutorial Sample App | Help")
 		end
 	end
+	
 	describe "About page" do
 		it "should have the h1 'About'" do
 			visit about_path

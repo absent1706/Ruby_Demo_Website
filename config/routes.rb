@@ -1,8 +1,9 @@
 DemoApp::Application.routes.draw do
   root to:'static_pages#home'
 
-  resources :microposts
+  
   resources :users
+  resources :microposts, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
 
 

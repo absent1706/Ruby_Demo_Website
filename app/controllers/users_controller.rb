@@ -56,13 +56,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  #если юзер вообще не авторизован, отправляем его на страницу авторизации
-  def signed_in_user
-    unless signed_in?
-      store_location
-      redirect_to signin_path, notice: "Please sign in."
-    end
-  end
+
 
   #если юзер хочет отредактировать чужие данные, отправляем его на домашнюю страницу сайта
   def correct_user
