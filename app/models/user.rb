@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation
 
   has_many :microposts, dependent: :destroy
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  has_many :followed_users, through: :relationships, source: :followed
   has_secure_password
 
   before_save { |user| user.email = email.downcase }
@@ -19,6 +21,19 @@ class User < ActiveRecord::Base
     Micropost.where("user_id = ?", id)
   end
 
+  def following?(other_user)
+    #вначале можно писать self, либо не писать. Тут это всё равно
+    relationships.find_by_followed_id(other_user.id)
+  end
+
+  def follow!(other_user)
+    relationships.create!(followed_id: other_user.id)
+  end
+
+  def unfollow!(other_user)
+    relationships.find_by_followed_id(other_user.id).destroy
+  end
+  
   private
 
   def create_remember_token
