@@ -2,10 +2,13 @@ DemoApp::Application.routes.draw do
   root to:'static_pages#home'
 
   
-  resources :users
+  resources :users do
+    member {get :following, :followers}
+  end
+
   resources :microposts, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
-
+  resources :relationships, only: [:create, :destroy]
 
   match '/home', to: 'static_pages#home'
   match '/help', to: 'static_pages#help'
