@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :find_user,:only=>[:edit,:show,:update]
-  before_filter :signed_in_user, only: [:edit, :update,:index, :destroy]
+  before_filter :find_user,:only=>[:edit,:show,:update,:followers,:following]
+  before_filter :signed_in_user, only: [:edit, :update,:index, :destroy,:followers,:following]
   before_filter :correct_user,   only: [:edit, :update]
   before_filter :admin_user,     only: :destroy
 
@@ -50,13 +50,23 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def following
+    @title = "Following"
+    @users = @user.followed_users.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
   private
 
   def find_user
     @user = User.find(params[:id])
   end
-
-
 
   #если юзер хочет отредактировать чужие данные, отправляем его на домашнюю страницу сайта
   def correct_user
