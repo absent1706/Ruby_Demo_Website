@@ -12,7 +12,6 @@ class ResetPasswordsController < ApplicationController
   end
 
   def new
-
   end
 
 end

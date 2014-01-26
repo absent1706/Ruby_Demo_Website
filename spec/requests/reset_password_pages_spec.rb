@@ -6,11 +6,19 @@ describe "Reset password page" do
 		it { should have_selector('h1',    text: 'Reset password') }
 		it { should have_selector('title', text: 'Reset password') }
 
-	# describe "signup page" do
-	# 	before { visit signup_path }
+	 describe "with invalid email" do
+	 	before {click_button "Reset password"}
+	 	it { should have_selector('div', text: "There's no user with such email") }
+	 end
 
-	# 	it { should have_selector('h1',    text: 'Sign up') }
-	# 	it { should have_selector('title', text: 'Sign up') }
-	# end
+	 describe "with existing email" do
+		let!(:user) { FactoryGirl.create(:user) }
+	 	before do
+	 		fill_in "Email", with: user.email
+	 		click_button "Reset password"
+	 	end
+
+	 	it { should have_selector('div', text: 'Email sent') }
+	 end
 
 end
