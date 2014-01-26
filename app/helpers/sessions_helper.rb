@@ -1,10 +1,8 @@
 module SessionsHelper
   def sign_in(user)
-    if params[:session][:remember_me]=="1" 
-      $debug_info="yes!"
+  if (params.has_key?(:session) && params[:session][:remember_me]=="1")
       cookies.permanent[:remember_token] = user.remember_token
     else
-      $debug_info="no =("
       cookies[:remember_token] = user.remember_token
     end
     self.current_user = user

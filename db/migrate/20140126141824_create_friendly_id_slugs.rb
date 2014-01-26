@@ -9,7 +9,7 @@ class CreateFriendlyIdSlugs < ActiveRecord::Migration
     end
     add_index :friendly_id_slugs, :sluggable_id
     add_index :friendly_id_slugs, [:slug, :sluggable_type], :unique => true
-    add_index :users, :slug, unique: true
+    add_index :friendly_id_slugs, :sluggable_type
   end
 
   def self.down

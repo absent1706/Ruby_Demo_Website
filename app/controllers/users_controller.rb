@@ -34,6 +34,8 @@ class UsersController < ApplicationController
   end
 
   def update
+    $debug_info=@user
+    #redirect_to root_path
     if @user.update_attributes(params[:user])
       flash[:success] = "Profile updated"
       sign_in @user
