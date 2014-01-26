@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   #   new_record?#генерить новый УРЛ только, когда запись новая. Если мы изменяем существующую, УРЛ останется прежним
   # end
 
-  attr_accessible :name, :email, :password, :password_confirmation,:slug
+  attr_accessible :name, :email, :password, :password_confirmation#,:slug
 
   has_many :microposts, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
