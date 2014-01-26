@@ -5,15 +5,15 @@
   <div class="span6 offset3">
     <%= form_for(:session, url: sessions_path) do |f| %>
 
-      <%= f.label :email %>
-      <%= f.text_field :email %>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
 
-      <%= f.label :password %>
-      <%= f.password_field :password %>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
     
-      Remember me <%= f.check_box :remember_me %>
-
-      <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+    Remember me <%= f.check_box :remember_me %>
+    <p><%= link_to "forgotten password?", reset_password_path %></p>
+    <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>

@@ -18,4 +18,7 @@ DemoApp::Application.routes.draw do
   match '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
+
+  get  '/reset_password', to: 'reset_passwords#new'
+  post '/reset_password', to: 'reset_passwords#create'
 end
