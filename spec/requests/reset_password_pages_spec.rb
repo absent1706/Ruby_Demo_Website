@@ -1,5 +1,12 @@
 require 'spec_helper'
 
+shared_examples "coolable" do |target_name|
+  it "should make #{ target_name } cool" do
+    target.make_cool
+    target.should be_cool
+  end
+end
+
 describe "New reset password page" do
   before {visit reset_password_path}
   subject { page }
@@ -15,15 +22,15 @@ describe "New reset password page" do
   end
 
   describe "with existing email" do
-    let!(:user) { FactoryGirl.create(:user) }
+    let!(:u) { FactoryGirl.create(:user) }
     before do
-      user.save!
-      fill_in "Email", with: user.email
+      fill_in "Email", with: u.email
       click_button "Reset password"
     end
 
-	let (:user_reloaded) {user.reload}
-    specify {user_reloaded.reset_password_token.should_not be_nil}
+	let(:user) { u.reload }
+
+	specify {user.reset_password_token.should_not be_nil}
     it { should have_content('Email sent') }
 
     it "should redirect to root_path" do
@@ -37,19 +44,27 @@ describe "New reset password page" do
 
 
     describe "setting new password" do
-
-      before {visit edit_new_password_path(user_reloaded.reset_password_token)}
-	  it {should have_content("Reset Password")}      
-
-      context "it updates the user password when confirmation matches" do
-        #user.save!
-        before do
+	  def fill_and_click
           fill_in "Password", :with => "foobar"
           fill_in "Password confirmation", :with => "foobar"
-          click_button "Update Password"
-        end
+          click_button "Update Password"	  	
+	  end
 
+      before {visit edit_new_password_path(user.reset_password_token)}
+	  it {should have_content("Reset Password")}      
+
+      context "it updates password when input is correct" do
+        before {fill_and_click}
         it {should have_content("Password has been reset")}
+      end
+
+       context "it doesn't update password when token has expired" do
+        before do
+  	      user.update_attribute(:reset_password_sent_at, 5.hours.ago)
+  	      visit edit_new_password_path(user.reload.reset_password_token)
+  	      fill_and_click
+        end
+        it {should have_content("Password reset has expired")}
       end
     end
 
