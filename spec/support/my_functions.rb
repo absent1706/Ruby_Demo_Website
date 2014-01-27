@@ -6,3 +6,7 @@ def sign_in(user)
   # Вход без Capybara.
   cookies[:remember_token] = user.remember_token
 end
+
+
+
+

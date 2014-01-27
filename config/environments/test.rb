@@ -41,4 +41,6 @@ DemoApp::Application.configure do
     BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
   end
 
+  config.action_mailer.default_url_options = { :host => "www.example.com" }
+
 end

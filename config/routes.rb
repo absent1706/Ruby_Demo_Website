@@ -21,4 +21,6 @@ DemoApp::Application.routes.draw do
 
   get  '/reset_password', to: 'reset_passwords#new'
   post '/reset_password', to: 'reset_passwords#create'
+  put '/reset_password(.:reset_password_token)', to: 'reset_passwords#update'
+  get '/edit_new_password(.:reset_password_token)', to: 'reset_passwords#edit', as: :edit_new_password
 end
