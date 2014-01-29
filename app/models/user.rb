@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   before_save { |user| user.email = email.downcase }
   before_save { generate_token(:remember_token)}
 
-  after_create do
+  before_create do
     generate_token(:signup_confirm_token)
     confirm_signup_sent_at=Time.zone.now
   end

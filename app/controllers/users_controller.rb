@@ -13,13 +13,12 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save
-      if Rails.env.test?
+      flash[:success] = "We have sent a confirmation letter to you. Check your email to complete registration."
+      redirect_to root_path unless Rails.env.test?
+
+      if Rails.env.test?#для тестов мы хоть и отсылаем e-mail для подвтерждения регистрации, но после этого всё равно пускаем юзера (singin user)
         sign_in @user
-        flash[:success] = "Your profile was created"
         redirect_to @user
-      else
-        flash[:success] = "We have sent a confirmation letter to you. Check your email to complete registration."
-        redirect_to root_path
       end
     else
       render 'new'

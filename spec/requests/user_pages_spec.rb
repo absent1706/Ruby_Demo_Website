@@ -4,12 +4,6 @@ describe "User pages" do
 
 	subject { page }
 
-	describe "signup page" do
-		before { visit signup_path }
-
-		it { should have_selector('h1',    text: 'Sign up') }
-		it { should have_selector('title', text: 'Sign up') }
-	end
 
 	describe "profile page" do
 		let(:user) { FactoryGirl.create(:user) }
@@ -81,7 +75,8 @@ describe "User pages" do
 	describe "signup page" do
 
 		before { visit signup_path }
-
+		it { should have_selector('h1',    text: 'Sign up') }
+		it { should have_selector('title', text: 'Sign up') }
 		let(:submit) { "Create my account" }
 
 		describe "with invalid information" do
@@ -101,6 +96,16 @@ describe "User pages" do
 			it "should create a user" do
 				expect { click_button submit }.to change(User, :count).by(1)
 			end 	
+
+			context "sending confirmation email" do
+				before { click_button submit }
+				let (:user) {User.where(email:"ussser@example.com").first}
+				
+				it {should have_content("We have sent a confirmation letter to you")}  
+				specify {user.reload.signup_confirm_token.should_not be_nil}				
+				#specify {user}
+			end 	
+			
 
 
 		end
