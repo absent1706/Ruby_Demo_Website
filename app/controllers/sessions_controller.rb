@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-include SessionsHelper
+  include SessionsHelper
+
   def new
   end
 
@@ -10,7 +11,7 @@ include SessionsHelper
        sign_in (user)
        redirect_back_or user
     else
-      flash.now[:error] = (user && user.active) ? 'User is inactive. Check your email to activate.' : 'Invalid email/password combination'
+      flash.now[:error] = (user && !user.active) ? 'User is inactive. Check your email to activate.' : 'Invalid email/password combination'
       render 'new'
     end
   end

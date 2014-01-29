@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
 
   def send_signup_confirmation
     generate_token(:signup_confirm_token)
-    confirm_signup_sent_at=Time.zone.now
+    self.signup_confirm_sent_at=Time.zone.now
     save!(validate: false)
     UserMailer.confirm_signup(self).deliver
   end

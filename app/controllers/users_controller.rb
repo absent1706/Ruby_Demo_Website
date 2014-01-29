@@ -40,7 +40,6 @@ class UsersController < ApplicationController
 
   def update
     $debug_info=@user
-    #redirect_to root_path
     if @user.update_attributes(params[:user])
       flash[:success] = "Profile updated"
       sign_in @user
@@ -67,6 +66,19 @@ class UsersController < ApplicationController
     @title = "Followers"
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
+  end
+
+  def activate
+    $debug_info=params
+    @user = User.where(id: params[:id], signup_confirm_token: params[:token], active: false).first
+    if @user
+      @user.update_attribute(:active, true)
+     #@user.save!
+      flash[:success] = "#{@user.name}Account was activated. You can sign in now."
+      redirect_to signin_path
+    else
+      redirect_to root_path, notice: "123"
+    end
   end
 
   private

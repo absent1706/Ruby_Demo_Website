@@ -99,14 +99,21 @@ describe "User pages" do
 
       context "sending confirmation email" do
         before { click_button submit }
-        let (:user) {User.where(email:"ussser@example.com").first}
+        let! (:user) {User.where(email:"ussser@example.com").first}
+		let (:token) {user.reload.signup_confirm_token}
 
         it {should have_content("We have sent a confirmation letter to you")}
         specify {user.reload.signup_confirm_token.should_not be_nil}
+		specify {user.reload.active.should be_false}
 
         it "should send confirmation email to the user" do
-          expect(last_email).to have_content(user.reload.signup_confirm_token)
+          expect(last_email).to have_content(:token)
         end
+
+        context "activating a user" do
+        	specify {user.reload.active.should be_true}
+        end
+
       end
 
 

@@ -19,8 +19,11 @@ DemoApp::Application.routes.draw do
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
+
   get  '/reset_password', to: 'reset_passwords#new'
   post '/reset_password', to: 'reset_passwords#create'
   put '/reset_password(.:reset_password_token)', to: 'reset_passwords#update'
   get '/edit_new_password(.:reset_password_token)', to: 'reset_passwords#edit', as: :edit_new_password
+
+  get '/activate/:id/:token',  to: 'users#activate'
 end
