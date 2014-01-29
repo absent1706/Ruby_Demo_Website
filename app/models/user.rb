@@ -64,12 +64,16 @@ class User < ActiveRecord::Base
     UserMailer.confirm_signup(self).deliver
   end
 
+  def clear_field(column)
+      self[column] = nil
+      save!(validate: false)
+  end
+
   private
 
   # def create_remember_token
   #   self.remember_token = SecureRandom.urlsafe_base64
   # end
-
 
   def generate_token(column)
     begin
