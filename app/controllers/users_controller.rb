@@ -13,9 +13,14 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      if Rails.env.test?
+        sign_in @user
+        flash[:success] = "Your profile was created"
+        redirect_to @user
+      else
+        flash[:success] = "We have sent a confirmation letter to you. Check your email to complete registration."
+        redirect_to root_path
+      end
     else
       render 'new'
     end

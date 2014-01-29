@@ -5,6 +5,7 @@ FactoryGirl.define do
 		password "foobar"
 		password_confirmation "foobar"
 		slug nil
+		active true
 		factory :admin do
 			admin true
 		end
