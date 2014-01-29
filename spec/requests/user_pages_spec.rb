@@ -107,11 +107,29 @@ describe "User pages" do
 		specify {user.reload.active.should be_false}
 
         it "should send confirmation email to the user" do
-          expect(last_email).to have_content(:token)
+          expect(last_email).to have_content(user.reload.signup_confirm_token)
         end
 
-        context "activating a user" do
-        	specify {user.reload.active.should be_true}
+        describe "activating a user" do
+        	def activate 
+        		visit "#{root_url}activate/#{user.id}/#{user.signup_confirm_token}"
+        	end
+
+        	context "with actual token" do
+        		before {activate}
+        		it { should have_content("Your account was activated") }
+        		specify {user.reload.active.should be_true}
+        	end
+
+        	context "with expired token" do
+        		before do
+        			user.update_attribute(:signup_confirm_sent_at, 8.days.ago)
+        			activate
+        		end
+        		it { should have_content("Activation was expired") }
+        		specify {user.reload.active.should be_false}
+        	end
+        	
         end
 
       end
