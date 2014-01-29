@@ -33,10 +33,6 @@ describe "New reset password page" do
 	specify {user.reset_password_token.should_not be_nil}
     it { should have_content('Email sent') }
 
-    it "should redirect to root_path" do
-      current_path.should == root_path
-    end
-
     it "should dispatch email to the user" do
       expect(last_email).to have_content(user.email)
     end
@@ -50,7 +46,7 @@ describe "New reset password page" do
           click_button "Update Password"	  	
 	  end
 
-      before {visit edit_new_password_path(user.reset_password_token)}
+    before {visit edit_new_password_path(user.reset_password_token)}
 	  it {should have_content("Reset Password")}      
 
       context "it updates password when input is correct" do

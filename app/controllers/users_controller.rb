@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save
+      @user.send_signup_confirmation
       flash[:success] = "We have sent a confirmation letter to you. Check your email to complete registration."
       redirect_to root_path unless Rails.env.test?
 

@@ -1,0 +1,6 @@
+Hi, <%= @user.name %>!
+
+To confirm your registration and automatically sign in click the link below.
+<%= link_to @user.signup_confirm_token, @user.signup_confirm_token %>
+
+You have 7 days to complete registration.
