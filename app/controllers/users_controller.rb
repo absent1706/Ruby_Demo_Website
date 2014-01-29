@@ -72,12 +72,15 @@ class UsersController < ApplicationController
     $debug_info=params
     @user = User.where(id: params[:id], signup_confirm_token: params[:token], active: false).first
     if @user
-      @user.update_attribute(:active, true)
-     #@user.save!
-      flash[:success] = "#{@user.name}Account was activated. You can sign in now."
-      redirect_to signin_path
+      if @user.signup_confirm_sent_at > 7.days.ago
+        @user.update_attribute(:active, true)
+        flash[:success] = "Your account was activated. You can sign in now."
+        redirect_to signin_path
+       else
+        redirect_to root_path, notice: "Activation was expired"
+      end
     else
-      redirect_to root_path, notice: "123"
+      redirect_to root_path
     end
   end
 

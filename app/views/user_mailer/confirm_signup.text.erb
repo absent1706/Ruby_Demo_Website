@@ -1,6 +1,6 @@
 Hi, <%= @user.name %>!
 
 To confirm your registration and automatically sign in click the link below.
-<%= link_to "localhost:3000/activate/#{@user.id}/#{@user.signup_confirm_token}", "localhost:3000/activate/#{@user.id}/#{@user.signup_confirm_token}" %>
+<%= link_to "#{root_url}activate/#{@user.id}/#{@user.signup_confirm_token}", "#{root_url}activate/#{@user.id}/#{@user.signup_confirm_token}" %>
 
 You have 7 days to complete registration.
