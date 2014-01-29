@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   #   new_record?#генерить новый УРЛ только, когда запись новая. Если мы изменяем существующую, УРЛ останется прежним
   # end
 
-  attr_accessible :name, :email, :password, :password_confirmation#,:slug
+  attr_accessible :name, :email, :password, :password_confirmation, :active#,:slug
 
   has_many :microposts, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
@@ -18,6 +18,11 @@ class User < ActiveRecord::Base
 
   before_save { |user| user.email = email.downcase }
   before_save { generate_token(:remember_token)}
+
+  before_create do
+    generate_token(:confirm_signup_token)
+    confirm_signup_sent_at=Time.zone.now
+  end
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :name,  presence: true, length: { maximum: 50 }
